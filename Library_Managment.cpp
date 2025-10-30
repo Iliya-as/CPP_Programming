@@ -125,6 +125,25 @@ public:
         }
         }
     }
+    void Remove()
+    {
+        Search();
+        if(book.empty())
+        {
+            cout<<"no books to remove "<<endl;
+            return ;
+        }
+        int index;
+        cout << "Enter the book index from list:";
+        cin >> index;
+        if (index < 1 || index >static_cast<int>(book.size()))
+        {
+            cout << "Invalid input ! " << endl;
+            return;
+        }
+        book.erase(book.begin()+(index - 1));
+        cout<<"Book removed succesfully "<<endl;
+    }
     void Show()
     {
         cout << setw(20) << "Book title " << setw(20) << "Book Author " << endl;
@@ -132,6 +151,10 @@ public:
         {
             cout << i + 1 << ")" << setw(15) << book[i].Get_Title() << setw(20) << book[i].Get_Author() << endl;
         }
+    }
+    void Save()
+    {
+
     }
 };
 bool End()
@@ -183,6 +206,7 @@ int main()
             break;
         case Remove:
             system("cls");
+            m.Remove();
             break;
         case Show:
             system("cls");
@@ -190,6 +214,7 @@ int main()
             break;
         case Save:
             system("cls");
+            m.Save();
             break;
         case Exit:
             cout << "Exiting....." << endl;
@@ -203,4 +228,6 @@ int main()
             return 0;
         }
     }
+    getch();
+    return 0;
 }
