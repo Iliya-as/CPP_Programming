@@ -3,6 +3,7 @@
 #include <conio.h>
 #include <vector>
 #include <iomanip>
+#include <fstream>
 using namespace std;
 class Book
 {
@@ -38,6 +39,12 @@ public:
     string Get_Author()
     {
         return Author;
+    }
+    Book() {}
+    Book(string t, string a)
+    {
+        Title = t;
+        Author = a;
     }
 };
 class Managment
@@ -128,21 +135,21 @@ public:
     void Remove()
     {
         Search();
-        if(book.empty())
+        if (book.empty())
         {
-            cout<<"no books to remove "<<endl;
-            return ;
+            cout << "no books to remove " << endl;
+            return;
         }
         int index;
         cout << "Enter the book index from list:";
         cin >> index;
-        if (index < 1 || index >static_cast<int>(book.size()))
+        if (index < 1 || index > static_cast<int>(book.size()))
         {
             cout << "Invalid input ! " << endl;
             return;
         }
-        book.erase(book.begin()+(index - 1));
-        cout<<"Book removed succesfully "<<endl;
+        book.erase(book.begin() + (index - 1));
+        cout << "Book removed succesfully " << endl;
     }
     void Show()
     {
@@ -154,7 +161,45 @@ public:
     }
     void Save()
     {
-
+        string name;
+        cout << "Enter the file name : ";
+        getline(cin >> ws, name);
+        ofstream file(name);
+        if (!file)
+        {
+            cout << "Please try again" << endl;
+        }
+        file << setw(20) << "Book title " << setw(20) << "Book Author " << endl;
+        for (auto &b : book)
+        {
+            file << setw(16) << b.Get_Title() << setw(7) << " , " << setw(7) << b.Get_Author() << endl;
+        }
+        file.close();
+        cout << "File saved successfully" << endl;
+    }
+    void Load()
+    {
+        string name;
+        getline(cin >> ws, name);
+        ifstream file(name);
+        if (!file)
+        {
+            cout << "Cannot open this file" << endl;
+        }
+        book.clear();
+        string t, a;
+        file.ignore(256, '\n');
+        while (file >> ws && getline(file, t, ',') && getline(file, a))
+        {
+            t.erase(0, t.find_first_not_of("\t"));
+            t.erase(0, t.find_last_not_of("\t") + 1);
+            a.erase(0, a.find_first_not_of("\t"));
+            a.erase(0, a.find_last_not_of("\t") + 1);
+            Book b(t, a);
+            book.push_back(b);
+        }
+        file.close();
+        cout << "File loaded successfully" << endl;
     }
 };
 bool End()
@@ -178,7 +223,8 @@ int main()
         Remove = 3,
         Show = 4,
         Save = 5,
-        Exit = 6
+        Load = 6,
+        Exit = 7
     };
     int o;
     while (true)
@@ -189,7 +235,8 @@ int main()
              << "3)Remove" << endl
              << "4)Show" << endl
              << "5)Save" << endl
-             << "6)Exit" << endl;
+             << "6)Load" << endl
+             << "7)Exit" << endl;
         cout << string(40, '=');
         cout << endl
              << "Enter your option number:";
@@ -215,6 +262,10 @@ int main()
         case Save:
             system("cls");
             m.Save();
+            break;
+        case Load:
+            system("cls");
+            m.Load();
             break;
         case Exit:
             cout << "Exiting....." << endl;
