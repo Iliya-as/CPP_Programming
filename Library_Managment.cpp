@@ -169,10 +169,10 @@ public:
         {
             cout << "Please try again" << endl;
         }
-        file << setw(20) << "Book title " << setw(20) << "Book Author " << endl;
+        file << "Book title " << "Book Author " << endl;
         for (auto &b : book)
         {
-            file << setw(16) << b.Get_Title() << setw(7) << " , " << setw(7) << b.Get_Author() << endl;
+            file <<  b.Get_Title() << "," <<  b.Get_Author() << endl;
         }
         file.close();
         cout << "File saved successfully" << endl;
@@ -187,16 +187,23 @@ public:
             cout << "Cannot open this file" << endl;
         }
         book.clear();
-        string t, a;
-        file.ignore(256, '\n');
-        while (file >> ws && getline(file, t, ',') && getline(file, a))
+        string line;
+        getline(file,line);
+        while (getline(file,line))
         {
-            t.erase(0, t.find_first_not_of("\t"));
-            t.erase(0, t.find_last_not_of("\t") + 1);
-            a.erase(0, a.find_first_not_of("\t"));
-            a.erase(0, a.find_last_not_of("\t") + 1);
-            Book b(t, a);
-            book.push_back(b);
+            size_t commapos=line.find(',');
+            string t,a;
+            if(commapos != string :: npos)
+            {
+                t=line.substr(0,commapos);
+                a=line.substr(commapos+1);
+                t.erase(0,t.find_first_not_of("\t\r\n"));
+                t.erase(t.find_last_not_of("\t\r\n")+1);
+                a.erase(0,a.find_first_not_of("\t\r\n"));
+                a.erase(a.find_last_not_of("\t\r\n")+1);
+                Book b(t,a);
+                book.push_back(b);
+            }
         }
         file.close();
         cout << "File loaded successfully" << endl;
