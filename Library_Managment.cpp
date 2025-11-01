@@ -1,4 +1,3 @@
-// shift+alt+f=formating
 #include <iostream>
 #include <conio.h>
 #include <vector>
@@ -47,7 +46,7 @@ public:
         Author = a;
     }
 };
-class Managment
+class Management
 {
 private:
     vector<Book> book;
@@ -88,7 +87,7 @@ public:
             }
             if (hold.empty())
             {
-                cout << "Book dosen't exist" << endl;
+                cout << "Book doesn't exist" << endl;
             }
             else
             {
@@ -118,7 +117,7 @@ public:
             }
             if (hold.empty())
             {
-                cout << "author dosen't exist";
+                cout << "author doesn't exist";
             }
             else
             {
@@ -149,7 +148,7 @@ public:
             return;
         }
         book.erase(book.begin() + (index - 1));
-        cout << "Book removed succesfully " << endl;
+        cout << "Book removed successfully " << endl;
     }
     void Show()
     {
@@ -168,45 +167,48 @@ public:
         if (!file)
         {
             cout << "Please try again" << endl;
+            return;
         }
         file << "Book title " << "Book Author " << endl;
         for (auto &b : book)
         {
-            file <<  b.Get_Title() << "," <<  b.Get_Author() << endl;
+            file << b.Get_Title() << "," << b.Get_Author() << endl;
         }
         file.close();
         cout << "File saved successfully" << endl;
     }
     void Load()
     {
+        cout << "Enter the file name to load:";
         string name;
         getline(cin >> ws, name);
         ifstream file(name);
         if (!file)
         {
             cout << "Cannot open this file" << endl;
+            return;
         }
         book.clear();
         string line;
-        getline(file,line);
-        while (getline(file,line))
+        getline(file, line);
+        while (getline(file, line))
         {
-            size_t commapos=line.find(',');
-            string t,a;
-            if(commapos != string :: npos)
+            size_t commapos = line.find(',');
+            string t, a;
+            if (commapos != string ::npos)
             {
-                t=line.substr(0,commapos);
-                a=line.substr(commapos+1);
-                t.erase(0,t.find_first_not_of("\t\r\n"));
-                t.erase(t.find_last_not_of("\t\r\n")+1);
-                a.erase(0,a.find_first_not_of("\t\r\n"));
-                a.erase(a.find_last_not_of("\t\r\n")+1);
-                Book b(t,a);
+                t = line.substr(0, commapos);
+                a = line.substr(commapos + 1);
+                t.erase(0, t.find_first_not_of(" \t\r\n"));
+                t.erase(t.find_last_not_of(" \t\r\n") + 1);
+                a.erase(0, a.find_first_not_of("\t\r\n"));
+                a.erase(a.find_last_not_of("\t\r\n") + 1);
+                Book b(t, a);
                 book.push_back(b);
             }
         }
-        file.close();
         cout << "File loaded successfully" << endl;
+        file.close();
     }
 };
 bool End()
@@ -222,7 +224,7 @@ bool End()
 }
 int main()
 {
-    Managment m;
+    Management m;
     enum Menu
     {
         Add = 1,
@@ -278,7 +280,7 @@ int main()
             cout << "Exiting....." << endl;
             return 0;
         default:
-            cout << "Invalid input";
+            cout << "Invalid input" << endl;
         }
         if (End() == false)
         {
