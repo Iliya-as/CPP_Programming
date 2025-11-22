@@ -124,6 +124,5 @@ int main()
     b.Show();
     cout<<endl<<endl;
     Matrix c=a.Add(b);
-    cout<<endl;
     c.Show();
 }
