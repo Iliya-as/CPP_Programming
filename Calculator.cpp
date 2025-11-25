@@ -37,4 +37,144 @@ public:
             cin >> r >> c;
             if (r <= 0 || c <= 0 || cin.fail())
             {
-    
+                cin.clear();
+                cin.ignore(numeric_limits<streamsize>::max(), '\n');
+                cout << "Invalid input ! \n";
+            }
+            else
+            {
+                break;
+            }
+        }
+        m = new int *[r];
+        for (int i = 0; i < r; i++)
+        {
+            m[i] = new int[c];
+        }
+    }
+    void Set_Input()
+    {
+        for (int i = 0; i < r; i++)
+        {
+            for (int j = 0; j < c; j++)
+            {
+                while (true)
+                {
+                    cout << "Enter A[" << i + 1 << "][" << j + 1 << "] : ";
+                    cin >> m[i][j];
+                    if (cin.fail())
+                    {
+                        cin.clear();
+                        cin.ignore(numeric_limits<streamsize>::max(), '\n');
+                        cout << "Invalid input ! \n";
+                    }
+                    else
+                    {
+                        break;
+                    }
+                }
+            }
+        }
+    }
+    void Show()
+    {
+        for (int i = 0; i < r; i++)
+        {
+            for (int j = 0; j < c; j++)
+            {
+                cout << "A[" << i + 1 << "][" << j + 1 << "] : " << m[i][j] << "\t";
+            }
+            cout << endl;
+        }
+    }
+    Matrix Add(const Matrix &b)
+    {
+        Matrix Res;
+        if (this->r != b.r || this->c != b.c)
+        {
+            cout << "Dimensions are not match " << endl;
+            return Res;
+        }
+        Res.r = r;
+        Res.c = c;
+        Res.m = new int *[Res.r];
+        for (int i = 0; i < Res.r; i++)
+        {
+            Res.m[i] = new int[Res.c];
+        }
+        for (int i = 0; i < r; i++)
+        {
+            for (int j = 0; j < c; j++)
+            {
+                Res.m[i][j] = m[i][j] + b.m[i][j];
+            }
+        }
+        return Res;
+    }
+    Matrix Diff(const Matrix &b)
+    {
+        Matrix Res;
+        if (this->r != b.r || this->c != b.c)
+        {
+            cout << "Dimensions are not match " << endl;
+            return Res;
+        }
+        Res.r = r;
+        Res.c = c;
+        Res.m = new int *[Res.r];
+        for (int i = 0; i < Res.r; i++)
+        {
+            Res.m[i] = new int[Res.c];
+        }
+        for (int i = 0; i < r; i++)
+        {
+            for (int j = 0; j < c; j++)
+            {
+                Res.m[i][j] = m[i][j] - b.m[i][j];
+            }
+        }
+        return Res;
+    }
+    Matrix Mul(const Matrix &b)
+    {
+        Matrix Res;
+        if (this->c != b.r)
+        {
+            cout << "Dimensions are not match " << endl;
+            return Res;
+        }
+        Res.r = this->r;
+        Res.c = b.c;
+        Res.m = new int *[Res.r];
+        for (int i = 0; i < Res.r; i++)
+        {
+            Res.m[i] = new int[Res.c];
+        }
+        for (int i = 0; i < Res.r; i++)
+        {
+            for (int j = 0; j < Res.c; j++)
+            {
+                Res.m[i][j] = 0;
+                for (int k = 0; k < this->c; k++)
+                {
+                    Res.m[i][j] += m[i][k] * b.m[k][j];
+                }
+            }
+        }
+        return Res;
+    }
+};
+int main()
+{
+    Matrix a, b;
+    a.Create_Matrix();
+    a.Set_Input();
+    a.Show();
+    cout << endl;
+    b.Create_Matrix();
+    b.Set_Input();
+    b.Show();
+    cout << endl;
+    Matrix c = a.Mul(b);
+    c.Show();
+}
