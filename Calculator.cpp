@@ -163,6 +163,25 @@ public:
         }
         return Res;
     }
+    Matrix Transpose()
+    {
+        Matrix Res;
+        Res.r = c;
+        Res.c = r;
+        Res.m = new int *[Res.r];
+        for (int i = 0; i < Res.r; i++)
+        {
+            Res.m[i] = new int [Res.c];
+        }
+        for (int i = 0; i < r; i++)
+        {
+            for (int j = 0; j < c; j++)
+            {
+                Res.m[j][i] = m[i][j];
+            }
+        }
+        return Res;
+    }
 };
 int main()
 {
@@ -170,11 +189,7 @@ int main()
     a.Create_Matrix();
     a.Set_Input();
     a.Show();
-    cout << endl;
-    b.Create_Matrix();
-    b.Set_Input();
-    b.Show();
-    cout << endl;
-    Matrix c = a.Mul(b);
-    c.Show();
+    cout<<endl;
+    Matrix t = a.Transpose();
+    t.Show();
 }
